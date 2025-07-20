@@ -7,19 +7,26 @@ spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: /api/orderproducer
         pathType: Prefix
         backend:
           service:
             name: order-producer-service
             port:
               number: 80
-      # - path: /api/auth/login
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: auth-service
-      #       port:
-      #         number: 80
+      - path: /order-producer/health
+        pathType: Prefix
+        backend:
+          service:
+            name: auth-service
+            port:
+              number: 80
+      - path: /order-producer/metrics
+        pathType: Prefix
+        backend:
+          service:
+            name: auth-service
+            port:
+              number: 80
 
 

@@ -4,8 +4,12 @@ using OrderProducerService.Infrastructure.MessageBroker;
 using OrderProducerService.Infrastructure.Security;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Adiciona o serviço de health check
+builder.Services.AddHealthChecks();
 
 // JWT Settings (caso queira configurar futuramente um validador próprio aqui)
 builder.Services.Configure<JwtSettings>(
@@ -80,11 +84,16 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Mapeia o endpoint de health check
+app.MapHealthChecks("/order-producer/health");
+
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+// Adicionar middleware do Prometheus com endpoint customizado
+app.UseMetricServer("/order-producer/metrics");
+app.UseHttpMetrics();
 
 app.UseHttpsRedirection();
 
