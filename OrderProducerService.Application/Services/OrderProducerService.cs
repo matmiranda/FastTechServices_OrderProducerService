@@ -1,5 +1,4 @@
-﻿
-using OrderProducerService.Application.DTOs;
+﻿using OrderProducerService.Application.DTOs;
 using OrderProducerService.Application.Interfaces;
 using OrderProducerService.Infrastructure.MessageBroker;
 using OrderProducerService.Infrastructure.Security;
@@ -23,7 +22,7 @@ namespace OrderProducerService.Application.Services
             if (!isValid)
                 throw new UnauthorizedAccessException("Invalid token");
 
-            await _rabbitMqProducer.PublishAsync("OrderQueue", request);
+            await _rabbitMqProducer.PublishAsync("orderProducer", request);
         }
     }
 }
