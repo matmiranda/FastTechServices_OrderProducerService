@@ -7,5 +7,6 @@
         public string DeliveryType { get; set; } = string.Empty; // "Counter", "DriveThru", "Delivery"
         public string? Justification { get; set; }
         public List<OrderItemRequest> Items { get; set; } = new();
+        public string Action { get; set; } = "CREATE"; // CREATE or UPDATE
     }
 }

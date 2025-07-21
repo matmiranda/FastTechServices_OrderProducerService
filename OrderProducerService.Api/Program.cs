@@ -20,6 +20,9 @@ builder.Services.Configure<JwtSettings>(
 builder.Services.AddHttpClient<IAuthClient, AuthClient>();
 
 // RabbitMQ Producer
+builder.Services.Configure<RabbitMQSettings>(
+    builder.Configuration.GetSection("RabbitMQ"));
+
 builder.Services.AddSingleton<IRabbitMQProducer, RabbitMQProducer>();
 
 // Application Service

@@ -1,5 +1,4 @@
-﻿// MenuProducerService.Api/Controllers/MenuProducerController.cs
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrderProducerService.Application.DTOs;
 using OrderProducerService.Application.Interfaces;
@@ -22,6 +21,7 @@ namespace MenuProducerService.Api.Controllers
         public async Task<IActionResult> Post([FromBody] OrderRequest request)
         {
             var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            request.Action = "CREATE"; // <-- Define ação para criação
             await _orderProducerService.PublishOrderAsync(request, token);
             return Ok(new { message = "Pedido enviado com sucesso para a fila." });
         }
