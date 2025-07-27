@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OrderProducerService.Application.DTOs;
 using OrderProducerService.Application.Interfaces;
+using OrderProducerService.Application.Request;
 
 namespace MenuProducerService.Api.Controllers
 {
@@ -17,13 +17,17 @@ namespace MenuProducerService.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> Post([FromBody] OrderRequest request)
+        [Authorize(Roles = "CLIENTE")]
+        public async Task<IActionResult> CriarPedido([FromBody] OrderCreateRequest request)
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            request.Action = "CREATE"; // <-- Define ação para criação
-            await _orderProducerService.PublishOrderAsync(request, token);
-            return Ok(new { message = "Pedido enviado com sucesso para a fila." });
+            return await _orderProducerService.PublishOrderCreateAsync(request);
+        }
+
+        [HttpPatch("cancel")]
+        [Authorize(Roles = "CLIENTE")]
+        public async Task<IActionResult> CancelOrder([FromBody] OrderCancelRequest request)
+        {
+            return await _orderProducerService.PublishOrderCancelAsync(request);
         }
     }
 }

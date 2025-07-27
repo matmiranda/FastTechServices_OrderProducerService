@@ -5,6 +5,7 @@ using OrderProducerService.Infrastructure.Security;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Prometheus;
+using OrderProducerService.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,6 +85,7 @@ builder.Services.AddAuthentication("Bearer")
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -97,6 +99,9 @@ app.UseSwaggerUI();
 // Adicionar middleware do Prometheus com endpoint customizado
 app.UseMetricServer("/order-producer/metrics");
 app.UseHttpMetrics();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
 
 app.UseHttpsRedirection();
 
