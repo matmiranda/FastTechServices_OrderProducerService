@@ -17,7 +17,6 @@ namespace OrderProducerService.Application.Request
         [MinLength(1, ErrorMessage = "O pedido deve conter pelo menos um item")]
         public required List<OrderItemDto> Items { get; set; }
 
-        public string? CancelReason { get; set; }
     }
 
 }

@@ -39,7 +39,7 @@ namespace OrderProducerService.Application.Services
 
         public async Task<IActionResult> PublishOrderCancelAsync(OrderCancelRequest request)
         {
-            //await ValidateTokenAsync();
+            await ValidateTokenAsync();
 
             await _rabbitMqProducer.PublishAsync(QueueNames.OrderCancelled, request);
 
